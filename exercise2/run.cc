@@ -2,6 +2,7 @@
 #include <vector>
 #include <functional>
 #include <string>
+#include <cmath>
 
 #include "Data.hh"
 
@@ -60,6 +61,8 @@ void runTests() {
     std::cout << (test() ? " ok" : " FAILED!") << std::endl;
 }
 
+
+
 int main() {
   using namespace std;
 
@@ -71,7 +74,6 @@ int main() {
   Data datB("exp_B");
   Data datC("exp_C");
   Data datD("exp_D");
-  Data datAundB = datC+datD;
   // Alle Experimente in ein Vektor
   std::vector<Data> alle_daten;
   alle_daten  ={datA,datB, datC, datD};
@@ -91,5 +93,7 @@ for (int i = 0; i  < alle_daten.size(); ++i){
     }
 }
 cout << "Number of Data Points with that differ by more than " << SigmaFaktor << " Sigma: " << NumberOfDataPoints << endl;
+cout << "Fit of bin 20: " << datA.fit(20)<< ", and measured value: "<<datA.measurement(20) <<endl;
+cout << "Chi**2/ndf =" << datB.ChiSquare() << endl;
   return 0;
 }

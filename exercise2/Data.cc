@@ -62,12 +62,26 @@ Data Data::operator+(Data dat1){
 		for (int i = 0; i < size(); i++){
 			addData  = (measurement(i)*error(i)+ dat1.measurement(i)*dat1.error(i))/(error(i)+dat1.error(i));
 			addError = sqrt(1./(error(i)+dat1.error(i)));
-			result.ChangeMmeasurement(i,addData);
-			result.ChangeError(i,addError);
-		}
-	}
+	       }
+    }
 	else{
-		cout << "Can't add the data sets " << checkCompatibility(dat1,1) << endl; 
+		cout << "Can't add the data sets " << checkCompatibility(dat1,1) << endl;
 	}
 	return result;
+}
+
+double Data::fit(int bin){
+        double bin_center = binCenter(bin);
+        double alpha = 0.005;
+        double beta = -0.00001;
+        double gamma = 0.08;
+        double delta = 0.015;
+        return alpha+beta*bin_center+gamma*exp(-delta*bin_center);
+}
+double Data::ChiSquare(){
+    double chi = 0.;
+    for (int i = 0; i < size(); i++) {
+        chi += pow((measurement(i)-fit(i)) ,2.)/pow(error(i),2.);
+    }
+    return chi/52;
 }

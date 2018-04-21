@@ -20,6 +20,8 @@ class Data {
   double ChangeError (int i, double x) {return m_bins[i]=x; }
   int checkCompatibility(Data dat2, int n);
   Data operator+(Data dat1);
+  double fit(int bin);
+  double ChiSquare();
  private:
   Data() {}  // disallow empty data set
   void assertSizes();
