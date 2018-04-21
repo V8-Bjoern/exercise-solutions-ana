@@ -45,12 +45,17 @@ Data::Data(const std::string& filename) {
 };
 
 void Data::assertSizes() { assert(m_data.size() + 1 == m_bins.size()); }
-double Data::DeltaY (Data dat2, int bin){ return std::abs(dat2.measurement(bin)-m_data[bin]); }
-double Data::DeltaYError (Data dat2, int bin) { return std::abs(dat2.error(bin)-m_error[bin]); }
+double Data::DeltaY (Data dat2, int bin){ return std::abs(dat2.measurement(bin)-measurement(bin)); }
+double Data::DeltaYError (Data dat2, int bin){
+    double sqrtY = sqrt(pow(dat2.measurement(bin),2.)+pow(measurement(bin),2.)-2*dat2.measurement(bin)*measurement(bin));
+    double y1 = 2*(dat2.measurement(bin)-measurement(bin));
+    double y2 = 2*(measurement(bin)-dat2.measurement(bin));
+    return y1/sqrtY*dat2.error(bin)+y2/sqrtY*error(bin);
+}
 int Data::checkCompatibility(Data dat2, int n) {
     int NumberOfDataPoints = 0;
-    for (int i=0; i < m_data.size(); i++){
-        if (DeltaY (dat2, i) < n*DeltaYError(dat2, i)) {NumberOfDataPoints += 1;}
+    for (int i=0; i < size(); i++){
+        if (DeltaY (dat2, i) > n*DeltaYError(dat2, i)) {NumberOfDataPoints += 1;}
     }
     return NumberOfDataPoints;
 }
@@ -58,7 +63,11 @@ Data Data::operator+(Data dat1){
 	Data result(dat1);
 	double addData;
 	double addError;
-	if (checkCompatibility(dat1,1)< 37 && checkCompatibility(dat1,1)> 33 ){
+    /*
+    The accepted intervall is the expected number of bins which,
+    differ by more than one sigma (18) plus minus sigma/2
+    */
+    if (checkCompatibility(dat1,1)< 24  && checkCompatibility(dat1,1)> 11 ){
 		for (int i = 0; i < size(); i++){
 			addData  = (measurement(i)*error(i)+ dat1.measurement(i)*dat1.error(i))/(error(i)+dat1.error(i));
 			addError = sqrt(1./(error(i)+dat1.error(i)));

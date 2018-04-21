@@ -79,21 +79,30 @@ int main() {
   alle_daten  ={datA,datB, datC, datD};
   // here is the data from experiment A=0 , B=1, C=2, D=3
   for(int i = 0; i < alle_daten.size(); ++i){
-   cout << "bin 27: from " << alle_daten[i].binLow(27) << " to " << alle_daten[i].binHigh(27)
-        << endl;
-   cout << "measurement of experiment " << i << " in bin 27: " << alle_daten[i].measurement(27)
-        << endl;
+      // Problem 4, Question 2:
+      cout << "Chi**2/ndf of experiment"<< i << " is: " << alle_daten[i].ChiSquare() << endl;
+      // No the Chi**2/ndf values are much higher than once
+
   }
   cout << "DeltaY of Bin 27 =" << datA.DeltaY(datB, 27) << "+/- " << datA.DeltaYError(datB, 27) << endl;
 int NumberOfDataPoints = 0;
-int SigmaFaktor = 1;
+int SigmaFaktor = 2;
 for (int i = 0; i  < alle_daten.size(); ++i){
     for(int n = i+1; n  < alle_daten.size(); ++n){
         NumberOfDataPoints += alle_daten[i].checkCompatibility(alle_daten[n], SigmaFaktor);
+        //Problem 4, Question 1:
+        cout << "All data points of set " << i << " and " << n << " which differ by more than two sigma " << alle_daten[i].checkCompatibility(alle_daten[n],2) << endl;
+        cout << "All data points of set " << i << " and " << n << " which differ by more than three sigma " << alle_daten[i].checkCompatibility(alle_daten[n],3) << endl;
+        /*
+        We expect that three bins have a deviation of more than 2 sigma and
+        0.15 bins should have a deviation of more than 3 sigma.
+        */
     }
 }
-cout << "Number of Data Points with that differ by more than " << SigmaFaktor << " Sigma: " << NumberOfDataPoints << endl;
-cout << "Fit of bin 20: " << datA.fit(20)<< ", and measured value: "<<datA.measurement(20) <<endl;
+cout << "Number of Data Points which differ by more than " << SigmaFaktor << " Sigma: " << NumberOfDataPoints << endl;
+//cout << "Fit of bin 20: " << datA.fit(20)<< ", and measured value: "<<datA.measurement(20) <<endl;
 cout << "Chi**2/ndf =" << datB.ChiSquare() << endl;
+Data datAll(datA);
+datAll = datA + datB + datC + datD;
   return 0;
 }
