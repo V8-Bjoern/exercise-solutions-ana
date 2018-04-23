@@ -47,10 +47,7 @@ Data::Data(const std::string& filename) {
 void Data::assertSizes() { assert(m_data.size() + 1 == m_bins.size()); }
 double Data::DeltaY (Data dat2, int bin){ return std::abs(dat2.measurement(bin)-measurement(bin)); }
 double Data::DeltaYError (Data dat2, int bin){
-    double sqrtY = sqrt(pow(dat2.measurement(bin),2.)+pow(measurement(bin),2.)-2*dat2.measurement(bin)*measurement(bin));
-    double y1 = 2*(dat2.measurement(bin)-measurement(bin));
-    double y2 = 2*(measurement(bin)-dat2.measurement(bin));
-    return y1/sqrtY*dat2.error(bin)+y2/sqrtY*error(bin);
+    return sqrt(pow(dat2.error(bin),2.)+pow(error(bin),2.));
 }
 int Data::checkCompatibility(Data dat2, int n) {
     int NumberOfDataPoints = 0;
@@ -69,8 +66,10 @@ Data Data::operator+(Data dat1){
     */
     if (checkCompatibility(dat1,1)< 24  && checkCompatibility(dat1,1)> 11 ){
 		for (int i = 0; i < size(); i++){
-			addData  = (measurement(i)*error(i)+ dat1.measurement(i)*dat1.error(i))/(error(i)+dat1.error(i));
-			addError = sqrt(1./(error(i)+dat1.error(i)));
+			addData  = (measurement(i)*1/pow(error(i),2.)+ dat1.measurement(i)*1/pow(dat1.error(i),2))/(1/pow(error(i),2.)+1/pow(dat1.error(i),2.));
+			addError = sqrt(1./(1/pow(error(i),2)+1/pow(dat1.error(i),2.)));
+            result.ChangeMmeasurement(i, addData);
+            result.ChangeError(i, addError);
 	       }
     }
 	else{

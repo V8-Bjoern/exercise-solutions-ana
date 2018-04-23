@@ -86,7 +86,7 @@ int main() {
   }
   cout << "DeltaY of Bin 27 =" << datA.DeltaY(datB, 27) << "+/- " << datA.DeltaYError(datB, 27) << endl;
 int NumberOfDataPoints = 0;
-int SigmaFaktor = 2;
+int SigmaFaktor = 1;
 for (int i = 0; i  < alle_daten.size(); ++i){
     for(int n = i+1; n  < alle_daten.size(); ++n){
         NumberOfDataPoints += alle_daten[i].checkCompatibility(alle_daten[n], SigmaFaktor);
@@ -101,8 +101,9 @@ for (int i = 0; i  < alle_daten.size(); ++i){
 }
 cout << "Number of Data Points which differ by more than " << SigmaFaktor << " Sigma: " << NumberOfDataPoints << endl;
 //cout << "Fit of bin 20: " << datA.fit(20)<< ", and measured value: "<<datA.measurement(20) <<endl;
-cout << "Chi**2/ndf =" << datB.ChiSquare() << endl;
+//Problem 4, Question 3:
 Data datAll(datA);
-datAll = datA + datB + datC + datD;
+datAll = datB + datC + datD;
+cout << "Chi**2/ndf of all data sets together: " << datAll.ChiSquare() << endl;
   return 0;
 }
