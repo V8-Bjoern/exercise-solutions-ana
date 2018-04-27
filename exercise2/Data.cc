@@ -60,16 +60,27 @@ Data Data::operator+(Data dat1){
 	Data result(dat1);
 	double addData;
 	double addError;
+    double w1;
+    double w2;
+    double y1w1;
+    double y2w2;
     /*
     The accepted intervall is the expected number of bins which,
     differ by more than one sigma (18) plus minus sigma/2
     */
     if (checkCompatibility(dat1,1)< 24  && checkCompatibility(dat1,1)> 11 ){
 		for (int i = 0; i < size(); i++){
-			addData  = (measurement(i)*1/pow(error(i),2.)+ dat1.measurement(i)*1/pow(dat1.error(i),2))/(1/pow(error(i),2.)+1/pow(dat1.error(i),2.));
-			addError = sqrt(1./(1/pow(error(i),2)+1/pow(dat1.error(i),2.)));
+            w1 = 1./pow(error(i),2.);
+            w2 = 1./pow(dat1.error(i),2.);
+            y1w1 = measurement(i)*w1;
+            y2w2 = dat1.measurement(i)*w2;
+
+			addData  = (y1w1 + y2w2 )/(w1 + w2);
+			addError = sqrt(1./(w1+w2));
             result.ChangeMmeasurement(i, addData);
             result.ChangeError(i, addError);
+            //cout << "measurement(dat1):" << measurement(i) << " ,measurement(dat2):" << dat1.measurement(i) << ", beide:" << addData << endl;
+            //cout << "error 1: " << error(i) << " ,error 2: " << dat1.error(i) << " ,beide: " << addError << endl;
 	       }
     }
 	else{
@@ -90,6 +101,7 @@ double Data::ChiSquare(){
     double chi = 0.;
     for (int i = 0; i < size(); i++) {
         chi += pow((measurement(i)-fit(i)) ,2.)/pow(error(i),2.);
+        //cout << "measurement " << measurement(i) <<" ,error" << error(i) << endl;
     }
     return chi/52;
 }
