@@ -1,0 +1,3 @@
+We observed that, the envelope of the Coverage converged to 0.68 for high mu and start at zero. It may follow the root function of a higher power.
+The Plot shows diffrent probabilitys for one mu, if mu is greater than 0.5.
+You may can interpret the continous part of the plot as subfunction for discret mu. While the uncontinous parts of the Coverage are a result of discreet poisson distribution. 
