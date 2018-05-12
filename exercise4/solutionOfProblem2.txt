@@ -1,0 +1,6 @@
+GetChisquareAB: 1.29804
+GetChisquareAC: 2.48838
+GetChisquareAD: 5.55488
+GetChisquareBC: 4.87082
+GetChisquareBC: 0.00924982
+GetChisquareCD: 7.54003
