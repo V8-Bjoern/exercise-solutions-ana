@@ -97,6 +97,9 @@ void combine()
   HResidualCD->Fit("gaus");
   TF1 *fit6 = HResidualCD->GetFunction("gaus");
   fout2 <<"GetChisquareCD: " << fit6->GetChisquare() << endl;
+  fout2 << "The Value of AB is very close to one, that means the fit is good." << endl;
+  fout2 << "AC, AD, BC and CD are not so good but ok." << endl;
+  fout2 << "The Value of BC is lower than one that means the fit is too normaly means that, the uncertainties are overestimate but we have no uncertainties." << endl;
 
 
   fout2.close();
