@@ -1,0 +1,16 @@
+Exercise 1:
+d Value, R = 1, d= 3
+1,  
+2,  
+3,  
+ 
+Exercise 2:
+d, n, sigma/I
+1,  
+2,  
+3,  
+ 
+ 
+Exercise 3:
+n, I, sigma/I
+ 
