@@ -1,16 +1,13 @@
 Exercise 1:
-d Value, R = 1, d= 3
-1,  
-2,  
-3,  
+d R=1 R=3
+1 2 6
+2 3.1276 28.1484
+3 4.2192 113.918
  
 Exercise 2:
 d, n, sigma/I
-1,  
-2,  
-3,  
- 
  
 Exercise 3:
+sigma_g=  
 n, I, sigma/I
  

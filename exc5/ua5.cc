@@ -2,8 +2,12 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-//#include <random>
+#include <random>
 #include <cstdlib>
+//#include <time.h>
+#include <ctime>
+//#include <TMath.h>
+//#include <TRandom3.h>
 
 int N = 10;
 int i = 1;
@@ -13,31 +17,33 @@ int Vcube = 1;
 double V;
 int k = 2;
 int j = 1;
+double rr;
+
+//time_t seconds;
+
+//time(&seconds);
+
+//srand((unsigned)seconds);
 
 double MCS(int N,int dim,int R){
-	int i = 1;
-	int j = 1;
+	//srand (time(NULL));
+	std::srand(std::time(0));
 	int IntN = 0;
 	int Vcube = pow(R,dim);
 	double quad = 0;
+	double r;
 	//rand:0bis1
-	while(i <= N){
-	while(j <= dim){
-	//srand(time(NULL));
-    int r = (rand() % 1001)/1000;
-	double quad = quad + pow(r,2);
-	int j = j + 1;
-	std::cout << j << " " << dim << std::endl;
+	for (int i = 1; i <= N; i++ ){ 
+	for (int j = 1; j <= dim; j++ ){      
+	r = std::rand() % 1000;
+	quad = quad + pow((r + 1)/1000,2);
 	}
 	if(quad <= 1){
-	IntN = IntN + 1;
+	IntN += 1;
 	}
-	int i = i +1;
-	double quad = 0;
-	int j = 1;
-	std::cout << "Sum" << std::endl;
+	quad = 0;
 	}
-    double V = 2^dim * Vcube * IntN / N;
+    double V = pow(2,dim) * Vcube * IntN / N;
 	return V;
 	};
 
@@ -46,14 +52,12 @@ int main(){
   ofstream solu("solution5.txt",ios::out);
   solu << "Exercise 1:" << endl;
   dim = 1;
-  N = 10;
-  solu << "d Value, R = 1, R = 3" << endl;
+  N = 10000;
+  solu << "d R=1 R=3" << endl;
   cout << "Start UA1" << endl;
-  while(dim<=3){
-	  solu << dim << ", " << MCS(N,dim,1) << ", " << MCS(N,dim,3) << endl;
-	  dim = dim + 1;
-	  cout << "durch" << endl;
-}
+  for (int dim = 1; dim <= 3; dim++ ){
+	  solu << dim << " " << MCS(N,dim,1) << " " << MCS(N,dim,3) << endl;
+  }
   solu << " " << endl;
   solu << "Exercise 2:" << endl;
   solu << "d, n, sigma/I" << endl;
