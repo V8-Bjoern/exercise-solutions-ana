@@ -95,9 +95,9 @@ int main()
   solu << "d= 3, R=3, N=10,000,000, Sigmma/IMC= "<< sqrt(mc_int(3,3,10000000)[1])/mc_int(3,3,10000000)[0] << endl;
   solu << "Exercise 3:" << endl;
   N=TMath::Power(10, 5);
-  solu << "d= 12, R=3, N=10,000 Sigmma/IMC= "<< sqrt(mc_int(12,3,N)[1])/(mc_int(12,3,N)[0]*sqrt(N)) << endl;
+  solu << "d= 12, R=3, N=100,000 Sigmma/IMC= "<< sqrt(mc_int(12,3,N)[1])/(mc_int(12,3,N)[0]*sqrt(N)) << endl;
   N=10000;
-  solu << "d= 12, R=3, N=10000, IMC="<< mc_int(12,3,N)[0] << " Sigmma/IMC= "<< sqrt(mc_int(12,3,N)[1])/(mc_int(12,3,N)[0]*sqrt(N)) << endl;
+  solu << "d= 12, R=3, N=10,000, IMC="<< mc_int(12,3,N)[0] << " Sigmma/IMC= "<< sqrt(mc_int(12,3,N)[1])/(mc_int(12,3,N)[0]*sqrt(N)) << endl;
   solu.close();
 
 }
