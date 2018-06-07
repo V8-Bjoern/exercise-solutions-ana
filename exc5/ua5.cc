@@ -32,8 +32,8 @@ double MCS(int N,int dim,int R){
 	//rand:0bis1
 	for (int i = 1; i <= N; i++ ){ 
 	for (int j = 1; j <= dim; j++ ){      
-	r = std::rand() % 1000;
-	quad = quad + pow((r + 1)/1000,2);
+	r = std::rand() % 1001;
+	quad = quad + pow(r /1000,2);
 	}
 	if(quad <= 1){
 	IntN += 1;
@@ -56,8 +56,8 @@ double MCV(int N,int dim,int R){
 	double VaI;
 	for (int i = 1; i <= N; i++ ){ 
 	for (int j = 1; j <= dim; j++ ){      
-	r = std::rand() % 1000;
-	quad = quad + pow((r + 1)/1000,2);
+	r = std::rand() % 1001;
+	quad = quad + pow(r /1000,2);
 	}
 	if(quad <= 1){
 	IntN += 1;
@@ -65,16 +65,36 @@ double MCV(int N,int dim,int R){
 	quad = 0;
 	};
     V = Vcube * IntN / N;
-	Va = ((pow((Vcube),2) * pow(IntN,2) / N) - pow(V,2)) / N;
+	Va = ((pow((Vcube),2) * IntN / N) - pow(V,2)) / N;
 	VaI = pow(Va, 0.5) / V;
 	return VaI;
 	};
 	
-//1% Genauigkeit Calculation
-//double sig(
-	double sig = 0,01 * pow(N,0.5)
-	double 
-	if (
+//Funktion zur Varianzberechnung in 3
+double MC3(int N,int dim,int R){
+	std::srand(std::time(0));
+	int IntN = 0;
+	int Vcube = pow(R,dim) * pow(2,dim);
+	double quad = 0;
+	double r;
+	double Va;
+	double V;
+	double VaI;
+	for (int i = 1; i <= N; i++ ){ 
+	for (int j = 1; j <= dim; j++ ){      
+	r = std::rand() % 1001;
+	quad = quad + pow(r /1000,2);
+	}
+	if(quad <= 1){
+	IntN += 1;
+	}
+	quad = 0;
+	};
+    V = Vcube * IntN / N;
+	Va = ((pow((Vcube),2) * IntN / N) - pow(V,2)) / N;
+	VaI = pow(Va, 0.5) * pow(N,0.5);
+	return VaI;
+	};
 	
 
 //Hauptprogramm
@@ -107,11 +127,13 @@ int main(){
   cout << "Work on UA3.." << endl;
   solu << " " << endl;
   solu << "Exercise 3:" << endl;
-  sigG = sig();
-  Nobs = sigG * xx;
+  sigG = MC3(100000,12,3);
+  double Accuracy = pow(sigG/0.01,2);
+  Nobs = 100000;
+  //solu << "n = " << Nobs << endl;
+  //solu << "I = " << MCS(Nobs,12,3) << endl;
+  //solu << "sigma/I = " << MCV(Nobs,12,3) << endl;
+  solu << "N_0.01% = " << Accuracy << endl;
   solu << "sigma_g = " << sigG << endl;
-  solu << "n = " << Nobs << endl;
-  solu << "I = " << MCS(Nobs,12,3) << endl;
-  solu << "sigma/I = " << MCV(Nobs,12,3) << endl;
   solu.close();
 }
