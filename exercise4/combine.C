@@ -5,6 +5,7 @@
 #include <algorithm>
 
 
+
 double background(double* x, double* pars);
 double signal(double* x, double* pars);
 double back_and_signal(double* x, double* pars);
@@ -12,6 +13,7 @@ std::vector<double> residual(TH1D *exp1, TH1D *exp2);
 
 void combine()
 {
+   gStyle->SetOptFit(111111);	
   // open file with data from experiment A
   TFile* fexpA = new TFile("exp_A.root", "READ");
 
@@ -76,7 +78,7 @@ void combine()
 
 
   /*
-  Probelem 2
+  Problem 2
   */
   std::ofstream fout2("solutionOfProblem2.txt");
   HResidualAB->Fit("gaus");
@@ -104,6 +106,26 @@ void combine()
 
 
   fout2.close();
+  
+  /*
+   Problem 3
+  */
+  //Make a new hist and clone expA
+  TH1D* expAll = (TH1D*) expA->Clone("expAll");
+  
+  
+  expAll->SetBit(TH1D::kIsAverage);
+  expA->SetBit(TH1D::kIsAverage);
+  expB->SetBit(TH1D::kIsAverage);
+  expC->SetBit(TH1D::kIsAverage);
+  expD->SetBit(TH1D::kIsAverage);
+  
+  //Add all hists to expAll
+  expAll->Add(expB,1);
+  expAll->Add(expC,1);
+  expAll->Add(expD,1);
+
+
 
   // draw it
   expA->Draw("E1");
@@ -137,8 +159,20 @@ void combine()
   bf->SetParameters(bpars);
   bf->SetLineColor(kBlue+1);
   bf->SetLineStyle(kDashed);
-
+  
+  //Def. the fit problem 3
+  std::ofstream fout3("solutionOfProblem3.txt");
+  TF1* fit = new TF1("fit", back_and_signal,20,300,7);
+  fit->SetParameters(pars); 
+  expAll->Fit("fit"); 
+  //fout3 << fit->GetParameters() << endl; 
+  for (int i=0;i<fit->GetNpar();i++) {	 
+	fout3 << "p"<< i << ": " << fit->GetParameter(i) <<" +/- " <<fit->GetParError(i)<< endl; 
+   }
+  fout3.close();
+  
   bf->Draw("same");
+  
 
 
   results->WriteTObject(HResidualAB);
@@ -147,6 +181,7 @@ void combine()
   results->WriteTObject(HResidualBC);
   results->WriteTObject(HResidualBD);
   results->WriteTObject(HResidualCD);
+  results->WriteTObject(expAll);
 
   results->Close();
 }
